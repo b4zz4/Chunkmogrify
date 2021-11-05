@@ -9,7 +9,7 @@ generator_path: resources/ffhq.pkl
 # Perform plain torch.load on the pkl, otherwise look for G_ema.
 generator_load_raw: False
 # Resolution of the trained generator.
-generator_native_resolution: [1024, 1024]
+generator_native_resolution: [512, 512]
 
 # Default projection mode.
 projection_mode: w_projection

@@ -1,4 +1,4 @@
-# Chunkmogrify: Real image inversion via Segments
+# Chunkmogrify: Real image inversion via Segments (4GB)
 
 <div>
   <p align="center">

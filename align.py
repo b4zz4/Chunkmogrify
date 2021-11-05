@@ -98,7 +98,7 @@ def align_face(filepath):
     # read image
     img = PIL.Image.open(filepath)
 
-    output_size=1024
+    output_size=512
     transform_size=4096
     enable_padding=True
 
@@ -168,7 +168,7 @@ def get_landmark_npy(img):
     # lm is a shape=(68,2) np.array
     return lm
 
-def align_face_npy(img, output_size=1024):
+def align_face_npy(img, output_size=512):
     lm = get_landmark_npy(img)
     
     lm_chin          = lm[0  : 17]  # left-right
@@ -246,7 +246,7 @@ def align_face_npy(img, output_size=1024):
     return np.array(img)
 
 
-def align_face_npy_with_params(img, output_size=1024):
+def align_face_npy_with_params(img, output_size=512):
     lm = get_landmark_npy(img)
     
     lm_chin          = lm[0  : 17]  # left-right
@@ -369,7 +369,7 @@ def unalign_face_npy(aligned_image, alignment_params):
 
     # Transform back to the unaligned quad.
     c = build_perspective(
-        [[0, 0], [0, 1024], [1024, 1024], [1024, 0]],
+        [[0, 0], [0, 512], [512, 512], [512, 0]],
         quad + 0.5, 
         )
     c = np.linalg.inv(c)
