@@ -22,9 +22,8 @@ import scipy.ndimage
 import dlib
 import cv2
 import numpy as np
-import torchvision.transforms.functional as fn
-
 from PIL import Image
+import torchvision.transforms.functional as fn
 from argparse import ArgumentParser
 
 # download model from: http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2
@@ -373,11 +372,11 @@ def unalign_face_npy(aligned_image, alignment_params):
         quad + 0.5, 
         )
     c = np.linalg.inv(c)
-    #aligned_image = cv2.resize(aligned_image, (1024, 1024))
+    # Upperscale with pytorch
     aligned_pil = PIL.Image.fromarray(aligned_image)
     aligned_pil = fn.resize(aligned_pil, size=[1024])
 
-    fill_mask = PIL.Image.fromarray(np.ones_like(aligned_image, dtype=np.uint8) * 255)
+    fill_mask = PIL.Image.fromarray(np.ones_like(aligned_pil, dtype=np.uint8) * 255)
     # Inverse to `unaligned = aligned_pil.transform((1024, 1024), PIL.Image.PERSPECTIVE, c.reshape(9)[0:8], Image.BICUBIC)``
     unaligned = aligned_pil.transform(
         (padded_img.width, padded_img.height), 
