@@ -15,11 +15,11 @@ generator_native_resolution: [512, 512]
 projection_mode: w_projection
 # Projection mode arguments.
 projection_args:
-  lr_init: 2.0e-1
+  lr_init: 2.0e-1 #4
   l2_loss_weight: .0
   l1_loss_weight: .0
-  noise_regularize_weight: 0. #10000.
-  mean_latent_loss_weight: 0. #10.
+  noise_regularize_weight: 0.001
+  mean_latent_loss_weight: 0.25 #10.
   percept_downsample: 0.85
 
 # Set this to ~ [0.5 - 1] if you want faster projection at the cost of ui updates.
@@ -28,7 +28,7 @@ minimum_projection_update_window: 0.1
 # Use this device for torch.
 device: cuda:0
 # Don't change this unless you want to do multimask descent.
-max_segments: 2
+max_segments: 1
 # Save exported images here.
 export_directory: SavedImages
 

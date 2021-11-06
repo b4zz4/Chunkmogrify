@@ -620,7 +620,7 @@ class Chunkmogrify(QMainWindow):
             lambda t: self.synthesis.set_output_mode(output_mode_mapping[t])
         )
 
-        # Save and unalign
+        # Save and unalign - aca
         def save_unaligned():
             aligned = self.workspace.current_image_as_numpy()[:, :, :3]
             # TODO: move the storage of alignment params

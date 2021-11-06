@@ -22,6 +22,7 @@ import scipy.ndimage
 import dlib
 import cv2
 import numpy as np
+import torchvision.transforms.functional as fn
 
 from PIL import Image
 from argparse import ArgumentParser
@@ -98,12 +99,12 @@ def align_face(filepath):
     # read image
     img = PIL.Image.open(filepath)
 
-    output_size=512
+    output_size=1024
     transform_size=4096
     enable_padding=True
 
     # Shrink.
-    shrink = int(np.floor(qsize / output_size * 0.5))
+    shrink = int(np.floor(qsize / 1024 * 0.5))
     if shrink > 1:
         rsize = (int(np.rint(float(img.size[0]) / shrink)), int(np.rint(float(img.size[1]) / shrink)))
         img = img.resize(rsize, PIL.Image.ANTIALIAS)
@@ -137,7 +138,6 @@ def align_face(filepath):
     img = img.transform((transform_size, transform_size), PIL.Image.QUAD, (quad + 0.5).flatten(), PIL.Image.BILINEAR)
     if output_size < transform_size:
         img = img.resize((output_size, output_size), PIL.Image.ANTIALIAS)
-
     # Save aligned image.
     return img
 
@@ -168,7 +168,7 @@ def get_landmark_npy(img):
     # lm is a shape=(68,2) np.array
     return lm
 
-def align_face_npy(img, output_size=512):
+def align_face_npy(img, output_size=1024):
     lm = get_landmark_npy(img)
     
     lm_chin          = lm[0  : 17]  # left-right
@@ -207,7 +207,7 @@ def align_face_npy(img, output_size=512):
     enable_padding=True
 
     # Shrink.
-    shrink = int(np.floor(qsize / output_size * 0.5))
+    shrink = int(np.floor(qsize / 1024 * 0.5))
     if shrink > 1:
         rsize = (int(np.rint(float(img.size[0]) / shrink)), int(np.rint(float(img.size[1]) / shrink)))
         img = img.resize(rsize, PIL.Image.ANTIALIAS)
@@ -246,7 +246,7 @@ def align_face_npy(img, output_size=512):
     return np.array(img)
 
 
-def align_face_npy_with_params(img, output_size=512):
+def align_face_npy_with_params(img, output_size=1204):
     lm = get_landmark_npy(img)
     
     lm_chin          = lm[0  : 17]  # left-right
@@ -285,7 +285,7 @@ def align_face_npy_with_params(img, output_size=512):
     enable_padding=True
 
     # Shrink.
-    shrink = int(np.floor(qsize / output_size * 0.5))
+    shrink = int(np.floor(qsize / 1024 * 0.5))
     if shrink > 1:
         rsize = (int(np.rint(float(img.size[0]) / shrink)), int(np.rint(float(img.size[1]) / shrink)))
         img = img.resize(rsize, PIL.Image.ANTIALIAS)
@@ -369,12 +369,14 @@ def unalign_face_npy(aligned_image, alignment_params):
 
     # Transform back to the unaligned quad.
     c = build_perspective(
-        [[0, 0], [0, 512], [512, 512], [512, 0]],
+        [[0, 0], [0, 1024], [1024, 1024], [1024, 0]],
         quad + 0.5, 
         )
     c = np.linalg.inv(c)
-
+    #aligned_image = cv2.resize(aligned_image, (1024, 1024))
     aligned_pil = PIL.Image.fromarray(aligned_image)
+    aligned_pil = fn.resize(aligned_pil, size=[1024])
+
     fill_mask = PIL.Image.fromarray(np.ones_like(aligned_image, dtype=np.uint8) * 255)
     # Inverse to `unaligned = aligned_pil.transform((1024, 1024), PIL.Image.PERSPECTIVE, c.reshape(9)[0:8], Image.BICUBIC)``
     unaligned = aligned_pil.transform(
@@ -405,7 +407,8 @@ def unalign_face_npy(aligned_image, alignment_params):
 
     x, y, w, h = cv2.boundingRect(mask)
     unaligned = cv2.seamlessClone(canvas, np.array(shrunk_image), mask, (int(x + w / 2), int(y + h /2)), 1)
-
+    # esta es la imagen original - aca
+    # tengo que quitarle la mascar y unirla con la imagen original
     aligned = np.array(unaligned)
     return aligned
 
