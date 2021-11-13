@@ -21,7 +21,7 @@ resource_list = {
 }
 
 resource_sources = {
-    'ffhq_styleganv2'     : 'https://dcgi.fel.cvut.cz/~futscdav/chunkmogrify/ffhq.pkl',
+    'ffhq_styleganv2'     : 'https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/transfer-learning-source-nets/ffhq-res512-mirror-stylegan2-noaug.pkl',
     'dlib_align_data'     : 'https://dcgi.fel.cvut.cz/~futscdav/chunkmogrify/shape_predictor_68_face_landmarks.dat',
     'styleclip_afro'      : 'https://dcgi.fel.cvut.cz/~futscdav/chunkmogrify/styleclip/afro.pt',
     'styleclip_bobcut'    : 'https://dcgi.fel.cvut.cz/~futscdav/chunkmogrify/styleclip/bobcut.pt',
@@ -29,6 +29,7 @@ resource_sources = {
     'styleclip_bowlcut'   : 'https://dcgi.fel.cvut.cz/~futscdav/chunkmogrify/styleclip/bowlcut.pt',
     'styleclip_mohawk'    : 'https://dcgi.fel.cvut.cz/~futscdav/chunkmogrify/styleclip/mohawk.pt',
 }
+#https://dcgi.fel.cvut.cz/~futscdav/chunkmogrify/ffhq.pkl',
 
 def download_url(url, store_at):
     dir = os.path.dirname(store_at)
